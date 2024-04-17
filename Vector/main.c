@@ -11,8 +11,9 @@ Vector make_Vector(int arr[], int size) {
     vector.size = size;
     vector.arr = malloc(sizeof(int) * vector.size);
     for (int i = 0; i < size; i++) {
-        *(arr + i) = arr[i];
+        vector.arr[i] = arr[i];
     }
+    return vector;
 }
 
 void append(Vector* vector, int value) {
@@ -25,12 +26,14 @@ int delete(Vector* vector, int index) {
     int* arrTemp = malloc(sizeof(int)*(vector->size - 1));
     int del;
     for (int i = 0; i < vector->size; i++) {
-        if (i == index) {
+        if (i < index) {
+            arrTemp[i] = vector->arr[i];
+        }
+        else if (i == index) {
             del = vector->arr[i];
-            
         }
         else {
-            arrTemp[i] = vector->arr[i];
+            arrTemp[i - 1] = vector->arr[i];
         }
     }
     free(vector->arr);
@@ -43,6 +46,7 @@ void print_Vector(Vector* vector) {
     for (int i = 0; i < vector->size; i++) {
         printf("%d ", vector->arr[i]);
     }
+    printf("\n");
 }
 
 int size(Vector* vector) {
@@ -62,10 +66,20 @@ int set(Vector* vector, int value, int index) {
 int main(void) {
     int arr[] = {7,3,7,8,4};
     Vector vector = make_Vector(arr, 5);
+
+    print_Vector(&vector);
+
     append(&vector, 7);
 
-    //delete(&vector,2);
-    //int g = get(&vector,1);
-    //int s = set(&vector, 25, 4);
-    //print_Vector(&vector);
+    print_Vector(&vector);
+
+    printf("%d \n", delete(&vector, 3));
+
+    print_Vector(&vector);
+
+    printf("%d \n", get(&vector,1));
+
+    printf("%d \n", set(&vector, 25, 3));
+    
+    print_Vector(&vector);
 }
